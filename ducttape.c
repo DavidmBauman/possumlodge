@@ -31,6 +31,8 @@ typedef struct {
     i32   length;
 } DT_String;
 
+// Runtime constructor of DT_Strings.
+// Has to take null terminated char*
 internal DT_String StringFromCString(char* cstr)
 {
     i32 len = 0;
