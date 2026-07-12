@@ -22,36 +22,48 @@ And remember, if the women don't find you handsome, they should at least find yo
 It's written in unity build style. Just include `ducttape.c` directly into the file rather than compiling and linking it separately.
 
 ## Usage
+ 
 ```c
-DT_String greeting = STR("Hello, world!");
-PrintString(greeting);
-```
-
-`DT_ARRAY(i32)` expands to:
-
-```c
-typedef struct {
-    i32* items;
-    i32  length;
-    i32  capacity;
-} i32Array;
-
-internal i32 i32Array_Get(i32Array array, i32 index)
+#include "ducttape.c"
+ 
+int main(void)
 {
-    if (index >= 0 && index < array.length)
-        return array.items[index];
-    return (i32)0;
+    DT_String greeting = STR("Hello, world!");
+    PrintString(greeting);
+
+    return 0;
 }
 ```
-ducttape provides this for all int and float types:
-`i8 i16 i32 i64`, `u8 u16 u32 u64`, `f32 f64`.
-
+ 
 ## Strings
-`DT_String` is a length aware string that stores a `char*` and a length rather than relying on a null terminator.\
-It's taken from Nic Barker's [Tips For C Programming](https://youtu.be/9UIIMBqq1D4)
+ 
+`DT_String` is a length-aware string that stores a `char*` and a length rather than relying on a null terminator, so getting the length is O(1) and substrings can be zero-copy views into a bigger buffer.
+ 
+```c
+DT_String a = STR("compile-time literal");   // length from sizeof
+DT_String b = StringFromCString(runtime_ptr); // length from a strlen-style walk
+PrintString(a);                               // prints via %.*s, no terminator needed
+```
+ 
+Taken from Nic Barker's [Tips for C Programming](https://youtu.be/9UIIMBqq1D4).
+ 
+## Typed Arrays
+ 
+`DT_ARRAY(T)` generates a fixed-capacity array type plus `Get`, `Set`, and `Push` for one element type. You provide the backing storage; `length` tracks how full it is, `capacity` is the ceiling.
+ 
+```c
+DT_ARRAY(i32)   // generates i32Array, i32Array_Get, i32Array_Set, i32Array_Push
+```
+ 
+Provided for all integer and float types: `i8 i16 i32 i64`, `u8 u16 u32 u64`, `f32 f64`.
+ 
+Accessors bounds-check with `assert`, so a bad index crashes at the mistake instead of failing silently. The checks compile out under `-DNDEBUG` for release builds.
+ 
 ## Macros
-`internal` / `local_persist` / `global_variable`\
-These and the typedefs are taken from Casey Muratori's Handmade Hero
-
+ 
+`internal` / `local_persist` / `global_variable` name the three jobs of `static`. Alongside `Kilobytes`–`Terabytes`, `ArrayCount`, and the sized typedefs, these are taken from Casey Muratori's [Handmade Hero](https://guide.handmadehero.org/).
+ 
 ## Naming
-Types and functions are unprefixed, the DT_ prefix only applies to the generator macro and DT_String struct.
+ 
+Types and functions are unprefixed (`DT_String`, `i32Array`, `PrintString`). The `DT_` prefix applies only to the generator macro `DT_ARRAY` and the `DT_String` struct.
+ 
