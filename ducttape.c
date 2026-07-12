@@ -73,6 +73,9 @@ internal void PrintString(DT_String string)
 */
 /* Defines the struct + getter for one element type. */
 
+
+// For release builds, you can flag -DNDEBUG to turn off the asserts below, 
+// or leave it undefined to keep bounds checks on
 #define DT_ARRAY(T)                                                    \
     typedef struct {                                                   \
         T*  items;                                                     \
