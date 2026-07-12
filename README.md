@@ -22,23 +22,24 @@ And remember, if the women don't find you handsome, they should at least find yo
 It's written in unity build style. Just include 'ducttape.c' directly into the file rather than compiling and linking it separately.
 
 ## Usage
-`DT_String greeting = STR("Hello, world!");`
-`PrintChars(greeting);`
+```c
+DT_String greeting = STR("Hello, world!");
+PrintChars(greeting);`
 
 DT_ARRAY(i32) expands to:
-`typedef struct {`
-`    i32* items;`
-`    i32  length;`
-`    i32  capacity;`
-`} i32Array;`
+typedef struct {
+    i32* items;
+    i32  length;
+    i32  capacity;
+} i32Array;
 
-`internal i32 i32Array_Get(i32Array array, i32 index)`
-`{`
-`    if (index >= 0 && index < array.length)`
-`        return array.items[index];`
-`    return (i32)0;`
-`}`
-
+internal i32 i32Array_Get(i32Array array, i32 index)
+{
+    if (index >= 0 && index < array.length)
+        return array.items[index];
+    return (i32)0;
+}
+```
 ducttape provides this for all int and float types:
 `i8 i16 i32 i64`, `u8 u16 u32 u64`, `f32 f64`.
 
