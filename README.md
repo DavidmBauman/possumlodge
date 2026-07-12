@@ -24,7 +24,7 @@ It's written in unity build style. Just include `ducttape.c` directly into the f
 ## Usage
 ```c
 DT_String greeting = STR("Hello, world!");
-PrintChars(greeting);
+PrintString(greeting);
 ```
 
 `DT_ARRAY(i32)` expands to:

@@ -35,13 +35,13 @@ typedef struct {
 
 /* Usage:
        DT_String greeting = STR("Keep your stick on the ice.");
-       PrintChars(greeting);        // prints: Keep your stick on the ice.
+       PrintString(greeting);        // prints: Keep your stick on the ice.
 
    Or inline, without a named variable:
-       PrintChars(STR("Quando omni flunkus moritati\n"));
+       PrintString(STR("Quando omni flunkus moritati\n"));
 */
 
-internal void PrintChars(DT_String string)
+internal void PrintString(DT_String string)
 {
     /* %.*s prints exactly length bytes; no null-terminator needed. */
     printf("%.*s", string.length, string.chars);
